@@ -1,0 +1,112 @@
+## Quality gates
+
+## Code style
+
+- Functions: 4-20 lines. Split if longer.
+- Files: under 500 lines. Split by responsibility.
+- One thing per function, one responsibility per module (SRP).
+- Names: specific and unique. Avoid data, handler, Manager.
+- Prefer names that return <5 grep hits in the codebase.
+- Types: explicit. No any, no Dict, no untyped functions.
+- No code duplication. Extract shared logic into a function/module.
+- Early returns over nested ifs. Max 2 levels of indentation.
+- Exception messages must include the offending value and expected shape.
+
+## Comments
+
+- Keep your own comments. Don't strip them on refactor — they carry
+  intent and provenance.
+- Write WHY, not WHAT. Skip // increment counter above i++.
+- Docstrings on public functions: intent + one usage example.
+- Reference issue numbers / commit SHAs when a line exists because
+  of a specific bug or upstream constraint.
+
+## Tests
+
+- Tests run with a single command: <project-specific>.
+- Every new function gets a test. Bug fixes get a regression test.
+- Mock external I/O (API, DB, filesystem) with named fake classes,
+  not inline stubs.
+- Tests must be F.I.R.S.T: fast, independent, repeatable,
+  self-validating, timely.
+
+## Dependencies
+
+- Inject dependencies through constructor/parameter, not global/import.
+- Wrap third-party libs behind a thin interface owned by this project.
+
+## Structure
+
+- Follow the framework's convention (Rails, Django, Next.js, etc.).
+- Prefer small focused modules over god files.
+- Predictable paths: controller/model/view, src/lib/test, etc.
+
+## Formatting
+
+- Use the language default formatter (cargo fmt, gofmt, prettier,
+  black, rubocop -A). Don't discuss style beyond that.
+
+## Logging
+
+- Structured JSON when logging for debugging / observability.
+- Plain text only for user-facing CLI output.
+
+## Architecture
+
+- Controllers/routes handle HTTP only.
+- Business logic belongs in services/use-cases.
+- Persistence belongs in repositories.
+- External integrations belong in adapters/gateways.
+- UI components must not directly call databases.
+- Domain logic must be framework-independent where practical.
+
+## Security
+
+- Never hardcode secrets, API keys, passwords, or tokens.
+- Read secrets only from environment variables or secret managers.
+- Validate all external input at the boundary.
+- Escape/parameterize SQL queries. Never build SQL with string concatenation.
+- Apply least-privilege permissions for DB, storage, and APIs.
+- Log security-relevant events without exposing sensitive data.
+- Treat all user input as untrusted.
+
+## Configuration
+
+- Environment-specific values belong in configuration, never in code.
+- Fail fast when required configuration is missing.
+- Document every environment variable in .env.example.
+- Use sensible defaults only for local development.
+- Configuration must be strongly typed and validated at startup.
+
+## API Design
+
+- Use explicit request and response schemas.
+- Validate all request payloads.
+- Return consistent error formats.
+- Version public APIs when introducing breaking changes.
+- Prefer idempotent operations where applicable.
+- Document endpoints alongside implementation.
+
+## Performance
+
+- Measure before optimizing.
+- Avoid premature optimization.
+- Cache only when a bottleneck is demonstrated.
+- Define expected complexity for non-trivial algorithms.
+- Large datasets must use pagination, batching, or streaming.
+
+## Documentation
+
+- README must explain setup, development, testing, and deployment.
+- Architecture decisions belong in ADRs (docs/adr).
+- Public modules require usage examples.
+- Keep documentation updated with code changes.
+- Complex business rules must be documented near the implementation.
+
+## Observability
+
+- Emit structured logs.
+- Track errors, latency, and throughput.
+- Correlation/request IDs should propagate through the system.
+- Critical workflows require monitoring and alerting.
+- Prefer metrics and traces over log-only debugging.
